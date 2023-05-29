@@ -3,6 +3,8 @@ import argparse
 from pykt.preprocess.split_datasets import main as split_concept
 from pykt.preprocess.split_datasets_que import main as split_question
 from pykt.preprocess import data_proprocess, process_raw_data
+from pykt.preprocess.split_falconcode import main as split_falcon_concept
+from pykt.preprocess.split_falconcode_que import main as split_falcon_question
 
 dname2paths = {
     "assist2009": "../data/assist2009/skill_builder_data_corrected_collapsed.csv",
@@ -17,7 +19,8 @@ dname2paths = {
     "assist2017": "../data/assist2017/anonymized_full_release_competition_dataset.csv",
     "junyi2015": "../data/junyi2015/junyi_ProblemLog_original.csv",
     "ednet": "../data/ednet/",
-    "peiyou": "../data/peiyou/grade3_students_b_200.csv"
+    "peiyou": "../data/peiyou/grade3_students_b_200.csv",
+    "falconcode": "./data/falconcode/"
 }
 configf = "../configs/data_config.json"
 
@@ -37,15 +40,24 @@ if __name__ == "__main__":
     if args.dataset_name=="peiyou":
         dname2paths["peiyou"] = args.file_path
         print(f"fpath: {args.file_path}")
+
+
     dname, writef = process_raw_data(args.dataset_name, dname2paths)
-    print("-"*50)
-    # split
-    os.system("rm " + dname + "/*.pkl")
 
-    #for concept level model
-    split_concept(dname, writef, args.dataset_name, configf, args.min_seq_len,args.maxlen, args.kfold)
-    print("="*100)
+    if args.dataset_name == "falconcode":
+        #for concept level model
+        split_concept(dname, writef[0], args.dataset_name, configf, args.min_seq_len,args.maxlen, args.kfold)
+        print("="*100)
+    else:
+        
+        print("-"*50)
+        # split
+        os.system("rm " + dname + "/*.pkl")
 
-    #for question level model
-    split_question(dname, writef, args.dataset_name, configf, args.min_seq_len,args.maxlen, args.kfold)
+        #for concept level model
+        split_concept(dname, writef, args.dataset_name, configf, args.min_seq_len,args.maxlen, args.kfold)
+        print("="*100)
+
+        #for question level model
+        split_question(dname, writef, args.dataset_name, configf, args.min_seq_len,args.maxlen, args.kfold)
 
