@@ -4,13 +4,13 @@ import numpy as np
 import json, copy
 from .split_datasets import read_data,ALL_KEYS,ONE_KEYS,extend_multi_concepts,save_dcur
 from .split_datasets import train_test_split,KFold_split,calStatistics,get_max_concepts,id_mapping,write_config
-from tqdm import tqdm
+
 
 def generate_sequences(df, effective_keys, min_seq_len=3, maxlen = 200, pad_val = -1):
     save_keys = list(effective_keys) + ["selectmasks"]
     dres = {"selectmasks": []}
     dropnum = 0
-    for i, row in tqdm(df.iterrows()):
+    for i, row in df.iterrows():
         dcur = save_dcur(row, effective_keys)
 
         rest, lenrs = len(dcur["responses"]), len(dcur["responses"])
@@ -180,7 +180,6 @@ def main(dname, fname, dataset_name, configf, min_seq_len = 3, maxlen = 200, kfo
     # print(f"split seqs dtypes: {split_seqs.dtypes}")
 
 
-    print("Generating sequences")
 
     # for test dataset
     # add default fold -1 to test!

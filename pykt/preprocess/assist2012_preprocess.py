@@ -49,7 +49,3 @@ def read_data_from_csv(read_file, write_file):
     write_txt(write_file, user_inters)
 
     print("\n".join(stares))
-
-    return
-
-

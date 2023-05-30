@@ -31,6 +31,8 @@ def process_raw_data(dataset_name,dname2paths):
         from .ednet_preprocess import read_data_from_csv
     elif dataset_name == "peiyou":
         from .aaai2022_competition import read_data_from_csv, load_q2c
+    elif "falconcode" in dataset_name:
+        from .falconcode_preprocess import read_data_from_csv  
     
     if dataset_name == "junyi2015":
         dq2c = load_q2c(readf.replace("junyi_ProblemLog_original.csv","junyi_Exercise_table.csv"))
@@ -39,6 +41,12 @@ def process_raw_data(dataset_name,dname2paths):
         fname = readf.split("/")[-1]
         dq2c = load_q2c(readf.replace(fname,"questions.json"))
         read_data_from_csv(readf, writef, dq2c)
+    elif "falconcode" in dataset_name:
+        # need different tables
+        _, train_cid, test_cid = dataset_name.split("_")
+        print(train_cid, test_cid)
+        writef = os.path.join(dname, f"fcc_{train_cid}_{test_cid}", "data.txt")
+        read_data_from_csv(readf, writef, (int(train_cid), int(test_cid)))
     elif dataset_name != "nips_task34":
         read_data_from_csv(readf, writef)
     else:

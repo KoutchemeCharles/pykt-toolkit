@@ -1,11 +1,12 @@
 import os, sys
+import time
 import pandas as pd
 import numpy as np
 import json, copy
 from tqdm import tqdm 
 
-ALL_KEYS = ["fold", "uid", "questions", "concepts", "responses", "timestamps", "usetimes", "selectmasks", "is_repeat", "qidxs", "rest", "orirow","cidxs"]
-ONE_KEYS = ["fold", "uid"]
+ALL_KEYS = ["fold", "uid", "questions", "concepts", "responses", "timestamps", "usetimes", "selectmasks", "is_repeat", "qidxs", "rest", "orirow","cidxs", "split"]
+ONE_KEYS = ["fold", "uid", "split"]
 
 def read_data(fname, min_seq_len=3, response_set=[0,1]):
     effective_keys = set()
@@ -18,17 +19,20 @@ def read_data(fname, min_seq_len=3, response_set=[0,1]):
         dcur = dict()
         while i < len(lines):
             line = lines[i].strip()
+            
             if i % 6 == 0: # stuid
                 effective_keys.add("uid")
+                effective_keys.add("split")
                 tmps = line.split(",")
-                stuid, seq_len = tmps[0], int(tmps[1])
+                stuid, seq_len, split = tmps[0], int(tmps[1]), tmps[2]
                 if seq_len < min_seq_len: # delete use seq len less than min_seq_len
                     i += 6
                     dcur = dict()
                     delstu += 1
                     delnum += seq_len
                     continue    
-                dcur["uid"] = stuid    
+                dcur["uid"] = stuid  
+                dcur["split"] = split     
                 goodnum += seq_len        
             elif i % 6 == 1: # question ids / names
                 qs = []
@@ -78,15 +82,19 @@ def read_data(fname, min_seq_len=3, response_set=[0,1]):
                     usets = line.split(",")
                 dcur["usetimes"] = usets
                 
+                # end processing code
                 for key in effective_keys:
                     dres.setdefault(key, [])
-                    if key != "uid":
+                    if key != "uid" and key != "split":
                         dres[key].append(",".join([str(k) for k in dcur[key]]))
                     else:
                         dres[key].append(dcur[key])
                 dcur = dict()
+
             i += 1
+
     df = pd.DataFrame(dres)
+    print(df)
     print(f"delete bad stu num of len: {delstu}, delete interactions: {delnum}, of r: {badr}, good num: {goodnum}")
     return df, effective_keys
 
@@ -98,9 +106,9 @@ def extend_multi_concepts(df, effective_keys):
     if "questions" not in effective_keys or "concepts" not in effective_keys:
         print("has no questions or concepts! return original.")
         return df, effective_keys
-    extend_keys = set(df.columns) - {"uid"}
+    extend_keys = set(df.columns) - {"uid", "split"}
 
-    dres = {"uid": df["uid"]}
+    dres = {"uid": df["uid"], "split": df["split"]}
     for _, row in df.iterrows():
         dextend_infos = dict()
         for key in extend_keys:
@@ -153,6 +161,14 @@ def id_mapping(df):
     finaldf = pd.DataFrame(dres)
     return finaldf, dkeyid2idx
 
+
+def predefined_train_test_split(df):
+    print(df.columns)
+    train_df = df[df.split == "train"]
+    test_df = df[df.split == "test"]
+
+    return train_df, test_df
+
 def train_test_split(df, test_ratio=0.2):
     df = df.sample(frac=1.0, random_state=1024)
     datanum = df.shape[0]
@@ -200,7 +216,7 @@ def generate_sequences(df, effective_keys, min_seq_len=3, maxlen = 200, pad_val 
     save_keys = list(effective_keys) + ["selectmasks"]
     dres = {"selectmasks": []}
     dropnum = 0
-    for i, row in df.iterrows():
+    for i, row in tqdm(df.iterrows()):
         dcur = save_dcur(row, effective_keys)
 
         rest, lenrs = len(dcur["responses"]), len(dcur["responses"])
@@ -230,6 +246,8 @@ def generate_sequences(df, effective_keys, min_seq_len=3, maxlen = 200, pad_val 
                 dres[key].append(dcur[key])
         dres["selectmasks"].append(",".join(["1"] * rest + [str(pad_val)] * pad_dim))
 
+        break 
+
     # after preprocess data, report
     dfinal = dict()
     for key in ALL_KEYS:
@@ -242,10 +260,7 @@ def generate_sequences(df, effective_keys, min_seq_len=3, maxlen = 200, pad_val 
 def generate_window_sequences(df, effective_keys, maxlen=200, pad_val=-1):
     save_keys = list(effective_keys) + ["selectmasks"]
     dres = {"selectmasks": []}
-    n = 0
-    for i, row in tqdm(df.iterrows()):
-        print("n", n, "|", df.shape[0])
-        n += 1
+    for i, row in df.iterrows():
         dcur = save_dcur(row, effective_keys)
         lenrs = len(dcur["responses"])
         if lenrs > maxlen:
@@ -274,6 +289,8 @@ def generate_window_sequences(df, effective_keys, maxlen=200, pad_val=-1):
                 else:
                     dres[key].append(dcur[key])
             dres["selectmasks"].append(",".join(["1"] * lenrs + [str(pad_val)] * pad_dim))
+
+        break 
     
     dfinal = dict()
     for key in ALL_KEYS:
@@ -362,8 +379,7 @@ def generate_question_sequences(df, effective_keys, window=True, min_seq_len=3, 
     dres = {}#"selectmasks": []}
     global_qidx = -1
     df["index"] = list(range(0, df.shape[0]))
-    for i, row in tqdm(df.iterrows()):
-
+    for i, row in df.iterrows():
         dcur = save_dcur(row, effective_keys)
         dcur["orirow"] = [row["index"]] * len(dcur["responses"])
 
@@ -430,6 +446,7 @@ def generate_question_sequences(df, effective_keys, window=True, min_seq_len=3, 
                         dres.setdefault(key, [])
                         dres[key].append(dcur[key])
                 #####
+        break 
     
     dfinal = dict()
     for key in ALL_KEYS:
@@ -480,6 +497,8 @@ def write_config(dataset_name, dkeyid2idx, effective_keys, configf, dpath, k=5,m
             data_config = {dataset_name:dconfig}
         else:
             data_config = json.loads(read_text)
+            if dataset_name not in data_config:
+                data_config[dataset_name] = {}
             data_config[dataset_name].update(dconfig)
     with open(configf, "w") as fout:
         data = json.dumps(data_config, ensure_ascii=False, indent=4)
@@ -521,6 +540,7 @@ def get_max_concepts(df):
             max_concepts = num_concepts
     return max_concepts
 
+
 def main(dname, fname, dataset_name, configf, min_seq_len = 3, maxlen = 200, kfold = 5):
     """split main function
 
@@ -543,6 +563,7 @@ def main(dname, fname, dataset_name, configf, min_seq_len = 3, maxlen = 200, kfo
     stares = []
 
     total_df, effective_keys = read_data(fname)
+    print(total_df)
     #cal max_concepts
     if 'concepts' in effective_keys:
         max_concepts = get_max_concepts(total_df)
@@ -567,10 +588,13 @@ def main(dname, fname, dataset_name, configf, min_seq_len = 3, maxlen = 200, kfo
     for key in ALL_KEYS:
         if key in effective_keys:
             config.append(key)
+
+            
     # train test split & generate sequences
-    train_df, test_df = train_test_split(total_df, 0.2)
+    # here, the variation is that we split based on the provided split name
+    train_df, test_df = predefined_train_test_split(total_df) # train_test_split(total_df, 0.2)
     splitdf = KFold_split(train_df, kfold)
-    # TODO
+
     splitdf[config].to_csv(os.path.join(dname, "train_valid.csv"), index=None)
     ins, ss, qs, cs, seqnum = calStatistics(splitdf, stares, "original train+valid")
     print(f"train+valid original interactions num: {ins}, select num: {ss}, qs: {qs}, cs: {cs}, seqnum: {seqnum}")
@@ -590,7 +614,6 @@ def main(dname, fname, dataset_name, configf, min_seq_len = 3, maxlen = 200, kfo
     print(f"test sequences interactions num: {ins}, select num: {ss}, qs: {qs}, cs: {cs}, seqnum: {seqnum}")
     print("="*20)
 
-    print("Generating sequences")
     test_window_seqs = generate_window_sequences(test_df, list(effective_keys) + ['cidxs'], maxlen)
     flag, test_question_seqs = generate_question_sequences(test_df, effective_keys, False, min_seq_len, maxlen)
     flag, test_question_window_seqs = generate_question_sequences(test_df, effective_keys, True, min_seq_len, maxlen)
