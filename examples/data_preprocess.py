@@ -20,9 +20,12 @@ dname2paths = {
     "junyi2015": "../data/junyi2015/junyi_ProblemLog_original.csv",
     "ednet": "../data/ednet/",
     "peiyou": "../data/peiyou/grade3_students_b_200.csv",
-    "falconcode": "./data/falconcode/"
+    "falconcode": "./data/falconcode/falconcode_v1_merged.csv",
+    "falconcode_2_2": "./data/falconcode/falconcode_v1_merged.csv",
+    "falconcode_2_3": "./data/falconcode/falconcode_v1_merged.csv",
+    "falconcode_23_4": "./data/falconcode/falconcode_v1_merged.csv",
 }
-configf = "../configs/data_config.json"
+configf = "/home/koutchc1/pykt-toolkit/configs/data_config.json"
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -31,6 +34,7 @@ if __name__ == "__main__":
     parser.add_argument("-m","--min_seq_len", type=int, default=3)
     parser.add_argument("-l","--maxlen", type=int, default=200)
     parser.add_argument("-k","--kfold", type=int, default=5)
+    parser.add_argument("--split", nargs=2)
     # parser.add_argument("--mode", type=str, default="concept",help="question or concept")
     args = parser.parse_args()
 
@@ -41,12 +45,11 @@ if __name__ == "__main__":
         dname2paths["peiyou"] = args.file_path
         print(f"fpath: {args.file_path}")
 
-
     dname, writef = process_raw_data(args.dataset_name, dname2paths)
 
-    if args.dataset_name == "falconcode":
+    if "falconcode" in args.dataset_name:
         #for concept level model
-        split_concept(dname, writef[0], args.dataset_name, configf, args.min_seq_len,args.maxlen, args.kfold)
+        split_falcon_concept(dname, writef, args.dataset_name, configf, args.min_seq_len,args.maxlen, args.kfold)
         print("="*100)
     else:
         
