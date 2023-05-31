@@ -246,8 +246,6 @@ def generate_sequences(df, effective_keys, min_seq_len=3, maxlen = 200, pad_val 
                 dres[key].append(dcur[key])
         dres["selectmasks"].append(",".join(["1"] * rest + [str(pad_val)] * pad_dim))
 
-        break 
-
     # after preprocess data, report
     dfinal = dict()
     for key in ALL_KEYS:
@@ -290,8 +288,6 @@ def generate_window_sequences(df, effective_keys, maxlen=200, pad_val=-1):
                     dres[key].append(dcur[key])
             dres["selectmasks"].append(",".join(["1"] * lenrs + [str(pad_val)] * pad_dim))
 
-        break 
-    
     dfinal = dict()
     for key in ALL_KEYS:
         if key in save_keys:
@@ -446,8 +442,7 @@ def generate_question_sequences(df, effective_keys, window=True, min_seq_len=3, 
                         dres.setdefault(key, [])
                         dres[key].append(dcur[key])
                 #####
-        break 
-    
+
     dfinal = dict()
     for key in ALL_KEYS:
         if key in save_keys:
@@ -591,10 +586,21 @@ def main(dname, fname, dataset_name, configf, min_seq_len = 3, maxlen = 200, kfo
 
             
     # train test split & generate sequences
-    # here, the variation is that we split based on the provided split name
-    train_df, test_df = predefined_train_test_split(total_df) # train_test_split(total_df, 0.2)
+    # here, the variation is that we split based on the provided splits
+
+    _, tr, tt = dataset_name.split("_")
+    if tr == tt:
+        print("okay")
+        train_df, test_df = train_test_split(total_df, 0.2)
+    else:
+        predefined_train_test_split(total_df) # train_test_split(total_df, 0.2)
+
+    print(train_df)
+    print(test_df)
+
     splitdf = KFold_split(train_df, kfold)
 
+    print("split dataframe", splitdf)
     splitdf[config].to_csv(os.path.join(dname, "train_valid.csv"), index=None)
     ins, ss, qs, cs, seqnum = calStatistics(splitdf, stares, "original train+valid")
     print(f"train+valid original interactions num: {ins}, select num: {ss}, qs: {qs}, cs: {cs}, seqnum: {seqnum}")
@@ -602,7 +608,8 @@ def main(dname, fname, dataset_name, configf, min_seq_len = 3, maxlen = 200, kfo
     ins, ss, qs, cs, seqnum = calStatistics(split_seqs, stares, "train+valid sequences")
     print(f"train+valid sequences interactions num: {ins}, select num: {ss}, qs: {qs}, cs: {cs}, seqnum: {seqnum}")
     split_seqs.to_csv(os.path.join(dname, "train_valid_sequences.csv"), index=None)
-    # print(f"split seqs dtypes: {split_seqs.dtypes}")
+    print(f"split seqs dtypes: {split_seqs.dtypes}")
+    print("split sequences", split_seqs)
 
     # add default fold -1 to test!
     test_df["fold"] = [-1] * test_df.shape[0]  

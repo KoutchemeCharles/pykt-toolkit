@@ -1,4 +1,3 @@
-import time
 import numpy as np 
 import pandas as pd 
 from pykt.preprocess.utils import format_list2str, write_txt
@@ -10,7 +9,7 @@ def read_data_from_csv(read_file, write_file, data_split):
     dataframe = pd.read_csv(read_file)
     dataframe.timestamp = pd.to_datetime(dataframe.timestamp)
     # Converting to miliseconds 
-    dataframe.timestamp = dataframe.timestamp.astype(np.int64) / int(1e6)
+    dataframe.timestamp = dataframe.timestamp.astype(np.int64) // int(1e6)
 
     dataframe = dataframe.sort_values(by="timestamp")
     # the data contains also students run in between, 
@@ -19,14 +18,20 @@ def read_data_from_csv(read_file, write_file, data_split):
     dataframe = dataframe[(dataframe.max_score == 100)]
     dataframe = dataframe[(dataframe.score > -1)]
 
+    # Defining which course ids are going to be used for training/validation
+    # and which course ids are going to be used for testing 
+    training_course_ids = list(map(int, data_split[0]))
+    test_course_ids = list(map(int, data_split[1]))
+    course_ids = [("train_test", training_course_ids)]
+    if training_course_ids != test_course_ids:
+        course_ids.append(("test", test_course_ids))
+
     data = []
-    course_ids = [("train", data_split[0]), ("test", data_split[1])]
     for split, course_id in course_ids:
-        df = dataframe[dataframe.course_id == course_id].reset_index(drop=True)
+        df = dataframe[dataframe.course_id.isin(course_id)].reset_index(drop=True)
         assert not df.empty
         groups = df.groupby("student_id")
         for user_id, user_data in groups:
-            # we need to save some specific information
             seq_len = user_data.shape[0]
             seq_question_id = list(user_data.problem_id.values)
             seq_skill_id = list(user_data.concept_list.values)

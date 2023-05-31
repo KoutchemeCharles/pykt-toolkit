@@ -36,7 +36,7 @@ def main(params):
         
     debug_print(text = "load config files.",fuc_name="main")
     
-    with open("../configs/kt_config.json") as f:
+    with open(params["kt_config_path"]) as f:
         config = json.load(f)
         train_config = config["train_config"]
         if model_name in ["dkvmn","deep_irt", "sakt", "saint","saint++", "akt", "atkt", "lpkt", "skvmn"]:
@@ -57,7 +57,7 @@ def main(params):
         # model_config = {"d_model": params["d_model"], "n_blocks": params["n_blocks"], "dropout": params["dropout"], "d_ff": params["d_ff"]}
     batch_size, num_epochs, optimizer = train_config["batch_size"], train_config["num_epochs"], train_config["optimizer"]
 
-    with open("../configs/data_config.json") as fin:
+    with open(params["data_config_path"]) as fin:
         data_config = json.load(fin)
     if 'maxlen' in data_config[dataset_name]:#prefer to use the maxlen in data config
         train_config["seq_len"] = data_config[dataset_name]['maxlen']

@@ -45,8 +45,10 @@ def process_raw_data(dataset_name,dname2paths):
         # need different tables
         _, train_cid, test_cid = dataset_name.split("_")
         print(train_cid, test_cid)
-        writef = os.path.join(dname, f"fcc_{train_cid}_{test_cid}", "data.txt")
-        read_data_from_csv(readf, writef, (int(train_cid), int(test_cid)))
+        # Changing the dataset path to it's specific subfolder 
+        dname = os.path.join(dname, f"fcc_{train_cid}_{test_cid}")
+        writef = os.path.join(dname, "data.txt")
+        read_data_from_csv(readf, writef, (train_cid, test_cid))
     elif dataset_name != "nips_task34":
         read_data_from_csv(readf, writef)
     else:
