@@ -72,3 +72,7 @@ We now have a [paper](https://arxiv.org/abs/2206.11460?context=cs.CY) you can ci
   year={2022}
 }
 ```
+
+## Files
+
+* generate_wand.py: allows the generation of the sweep configurations 

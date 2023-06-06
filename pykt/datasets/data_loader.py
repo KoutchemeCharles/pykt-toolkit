@@ -2,6 +2,7 @@
 # coding=utf-8
 
 import os, sys
+import time
 import pandas as pd
 import torch
 from torch.utils.data import Dataset
@@ -124,12 +125,15 @@ class KTDataset(Dataset):
         """
         dori = {"qseqs": [], "cseqs": [], "rseqs": [], "tseqs": [], "utseqs": [], "smasks": []}
 
+        print("sequence_path", sequence_path)
+        
         # seq_qids, seq_cids, seq_rights, seq_mask = [], [], [], []
         df = pd.read_csv(sequence_path)#[0:1000]
         df = df[df["fold"].isin(folds)]
         interaction_num = 0
         # seq_qidxs, seq_rests = [], []
         dqtest = {"qidxs": [], "rests":[], "orirow":[]}
+
         for i, row in df.iterrows():
             #use kc_id or question_id as input
             if "concepts" in self.input_type:
@@ -155,6 +159,8 @@ class KTDataset(Dataset):
                 dori[key] = LongTensor(dori[key])
             else:
                 dori[key] = FloatTensor(dori[key])
+
+        print(dori["cseqs"])
 
         mask_seqs = (dori["cseqs"][:,:-1] != pad_val) * (dori["cseqs"][:,1:] != pad_val)
         dori["masks"] = mask_seqs

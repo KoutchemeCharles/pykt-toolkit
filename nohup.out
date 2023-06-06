@@ -1,0 +1,98 @@
+wandb: Starting wandb agent 🕵️
+2023-06-06 10:13:11,859 - wandb.wandb_agent - INFO - Running runs: []
+2023-06-06 10:13:12,212 - wandb.wandb_agent - INFO - Agent received command: run
+2023-06-06 10:13:12,212 - wandb.wandb_agent - INFO - Agent starting run with config:
+	dataset_name: falconcode_2_2
+	dropout: 0.05
+	emb_size: 64
+	emb_type: qid
+	fold: 0
+	learning_rate: 0.001
+	model_name: dkt
+	save_dir: models/dkt_tiaocan_falconcode_2_2
+	seed: 42
+2023-06-06 10:13:12,214 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python wandb_dkt_train.py --dataset_name=falconcode_2_2 --dropout=0.05 --emb_size=64 --emb_type=qid --fold=0 --learning_rate=0.001 --model_name=dkt --save_dir=models/dkt_tiaocan_falconcode_2_2 --seed=42
+python: can't open file '/home/koutchc1/pykt-toolkit/wandb_dkt_train.py': [Errno 2] No such file or directory
+2023-06-06 10:13:17,224 - wandb.wandb_agent - INFO - Running runs: ['dkjwnyb2']
+2023-06-06 10:13:17,225 - wandb.wandb_agent - INFO - Cleaning up finished run: dkjwnyb2
+2023-06-06 10:13:17,753 - wandb.wandb_agent - INFO - Agent received command: run
+2023-06-06 10:13:17,753 - wandb.wandb_agent - INFO - Agent starting run with config:
+	dataset_name: falconcode_2_2
+	dropout: 0.05
+	emb_size: 64
+	emb_type: qid
+	fold: 0
+	learning_rate: 0.001
+	model_name: dkt
+	save_dir: models/dkt_tiaocan_falconcode_2_2
+	seed: 3407
+2023-06-06 10:13:17,755 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python wandb_dkt_train.py --dataset_name=falconcode_2_2 --dropout=0.05 --emb_size=64 --emb_type=qid --fold=0 --learning_rate=0.001 --model_name=dkt --save_dir=models/dkt_tiaocan_falconcode_2_2 --seed=3407
+python: can't open file '/home/koutchc1/pykt-toolkit/wandb_dkt_train.py': [Errno 2] No such file or directory
+2023-06-06 10:13:22,765 - wandb.wandb_agent - INFO - Running runs: ['ahf7efbt']
+2023-06-06 10:13:22,766 - wandb.wandb_agent - INFO - Cleaning up finished run: ahf7efbt
+2023-06-06 10:13:23,109 - wandb.wandb_agent - INFO - Agent received command: run
+2023-06-06 10:13:23,109 - wandb.wandb_agent - INFO - Agent starting run with config:
+	dataset_name: falconcode_2_2
+	dropout: 0.05
+	emb_size: 64
+	emb_type: qid
+	fold: 0
+	learning_rate: 0.0001
+	model_name: dkt
+	save_dir: models/dkt_tiaocan_falconcode_2_2
+	seed: 42
+2023-06-06 10:13:23,111 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python wandb_dkt_train.py --dataset_name=falconcode_2_2 --dropout=0.05 --emb_size=64 --emb_type=qid --fold=0 --learning_rate=0.0001 --model_name=dkt --save_dir=models/dkt_tiaocan_falconcode_2_2 --seed=42
+python: can't open file '/home/koutchc1/pykt-toolkit/wandb_dkt_train.py': [Errno 2] No such file or directory
+2023-06-06 10:13:28,121 - wandb.wandb_agent - INFO - Running runs: ['rgg4m5jj']
+2023-06-06 10:13:28,122 - wandb.wandb_agent - ERROR - Detected 3 failed runs in the first 60 seconds, shutting down.
+2023-06-06 10:13:28,122 - wandb.wandb_agent - INFO - To disable this check set WANDB_AGENT_DISABLE_FLAPPING=true
+wandb: Terminating and syncing runs. Press ctrl-c to kill.
+wandb: Starting wandb agent 🕵️
+2023-06-06 12:40:37,142 - wandb.wandb_agent - INFO - Running runs: []
+2023-06-06 12:40:37,483 - wandb.wandb_agent - INFO - Agent received command: run
+2023-06-06 12:40:37,483 - wandb.wandb_agent - INFO - Agent starting run with config:
+	dataset_name: falconcode_2_2
+	dropout: 0.05
+	emb_size: 64
+	emb_type: qid
+	fold: 0
+	learning_rate: 0.001
+	model_name: dkt
+	save_dir: models/dkt_tiaocan_falconcode_2_2
+	seed: 42
+2023-06-06 12:40:37,485 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python wandb_dkt_train.py --dataset_name=falconcode_2_2 --dropout=0.05 --emb_size=64 --emb_type=qid --fold=0 --learning_rate=0.001 --model_name=dkt --save_dir=models/dkt_tiaocan_falconcode_2_2 --seed=42
+python: can't open file '/home/koutchc1/pykt-toolkit/wandb_dkt_train.py': [Errno 2] No such file or directory
+2023-06-06 12:40:42,496 - wandb.wandb_agent - INFO - Running runs: ['x9e3aabp']
+2023-06-06 12:40:42,496 - wandb.wandb_agent - INFO - Cleaning up finished run: x9e3aabp
+2023-06-06 12:40:42,979 - wandb.wandb_agent - INFO - Agent received command: run
+2023-06-06 12:40:42,979 - wandb.wandb_agent - INFO - Agent starting run with config:
+	dataset_name: falconcode_2_2
+	dropout: 0.05
+	emb_size: 64
+	emb_type: qid
+	fold: 0
+	learning_rate: 0.001
+	model_name: dkt
+	save_dir: models/dkt_tiaocan_falconcode_2_2
+	seed: 3407
+2023-06-06 12:40:42,981 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python wandb_dkt_train.py --dataset_name=falconcode_2_2 --dropout=0.05 --emb_size=64 --emb_type=qid --fold=0 --learning_rate=0.001 --model_name=dkt --save_dir=models/dkt_tiaocan_falconcode_2_2 --seed=3407
+python: can't open file '/home/koutchc1/pykt-toolkit/wandb_dkt_train.py': [Errno 2] No such file or directory
+2023-06-06 12:40:47,991 - wandb.wandb_agent - INFO - Running runs: ['bgh0u1dr']
+2023-06-06 12:40:47,992 - wandb.wandb_agent - INFO - Cleaning up finished run: bgh0u1dr
+2023-06-06 12:40:48,349 - wandb.wandb_agent - INFO - Agent received command: run
+2023-06-06 12:40:48,349 - wandb.wandb_agent - INFO - Agent starting run with config:
+	dataset_name: falconcode_2_2
+	dropout: 0.05
+	emb_size: 64
+	emb_type: qid
+	fold: 0
+	learning_rate: 0.0001
+	model_name: dkt
+	save_dir: models/dkt_tiaocan_falconcode_2_2
+	seed: 42
+2023-06-06 12:40:48,352 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python wandb_dkt_train.py --dataset_name=falconcode_2_2 --dropout=0.05 --emb_size=64 --emb_type=qid --fold=0 --learning_rate=0.0001 --model_name=dkt --save_dir=models/dkt_tiaocan_falconcode_2_2 --seed=42
+python: can't open file '/home/koutchc1/pykt-toolkit/wandb_dkt_train.py': [Errno 2] No such file or directory
+2023-06-06 12:40:53,361 - wandb.wandb_agent - INFO - Running runs: ['3ovaabtg']
+2023-06-06 12:40:53,362 - wandb.wandb_agent - ERROR - Detected 3 failed runs in the first 60 seconds, shutting down.
+2023-06-06 12:40:53,362 - wandb.wandb_agent - INFO - To disable this check set WANDB_AGENT_DISABLE_FLAPPING=true
+wandb: Terminating and syncing runs. Press ctrl-c to kill.

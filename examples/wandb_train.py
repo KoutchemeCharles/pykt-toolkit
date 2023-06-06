@@ -1,16 +1,16 @@
 import os
-import argparse
 import json
+import datetime
 
 import torch
-torch.set_num_threads(4) 
+# torch.set_num_threads(4) 
 from torch.optim import SGD, Adam
 import copy
 
 from pykt.models import train_model,evaluate,init_model
 from pykt.utils import debug_print,set_seed
 from pykt.datasets import init_dataset4train
-import datetime
+
 
 os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
 device = "cpu" if not torch.cuda.is_available() else "cuda"
@@ -23,6 +23,7 @@ def save_config(train_config, model_config, data_config, params, save_dir):
         json.dump(d, fout)
 
 def main(params):
+    
     if "use_wandb" not in params:
         params['use_wandb'] = 1
 
@@ -48,7 +49,7 @@ def main(params):
         if model_name in ["qdkt","qikt"] and dataset_name in ['algebra2005','bridge2algebra2006']:
             train_config["batch_size"] = 32 
         model_config = copy.deepcopy(params)
-        for key in ["model_name", "dataset_name", "emb_type", "save_dir", "fold", "seed"]:
+        for key in ["model_name", "dataset_name", "emb_type", "save_dir", "fold", "seed", "kt_config_path", "data_config_path"]:
             del model_config[key]
         if 'batch_size' in params:
             train_config["batch_size"] = params['batch_size']
@@ -69,7 +70,11 @@ def main(params):
     debug_print(text="init_dataset",fuc_name="main")
     train_loader, valid_loader, *_ = init_dataset4train(dataset_name, model_name, data_config, fold, batch_size)
 
-    params_str = "_".join([str(v) for k,v in params.items() if not k in ['other_config']])
+    # Using the list of hyperparameters in the name for knowing what the experiment was about 
+
+    ignored_params = ['other_config', 'save_dir', 'kt_config_path', 'data_config_path']
+    params_str = "_".join([str(v) for k,v in params.items() if not k in ignored_params])
+    # Here, changing the name of the parameters to save
 
     print(f"params: {params}, params_str: {params_str}")
     if params['add_uuid'] == 1 and params["use_wandb"] == 1:
@@ -125,7 +130,7 @@ def main(params):
     save_model = True
     
     debug_print(text = "train model",fuc_name="main")
-    
+
     testauc, testacc, window_testauc, window_testacc, validauc, validacc, best_epoch = train_model(model, train_loader, valid_loader, num_epochs, opt, ckpt_path, None, None, save_model)
     
     if save_model:

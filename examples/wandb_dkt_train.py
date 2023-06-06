@@ -17,6 +17,8 @@ if __name__ == "__main__":
 
     parser.add_argument("--use_wandb", type=int, default=1)
     parser.add_argument("--add_uuid", type=int, default=1)
+    parser.add_argument("--kt_config_path", default="/home/koutchc1/pykt-toolkit/configs/kt_config.json")
+    parser.add_argument("--data_config_path", default="/home/koutchc1/pykt-toolkit/configs/data_config.json")
     
     args = parser.parse_args()
 

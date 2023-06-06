@@ -12,7 +12,7 @@ def main(params):
     params["model_names"], params["folds"], params["save_dir_suffix"], params["all_dir"], params["launch_file"], params["generate_all"]
     if not os.path.exists(all_dir):
         os.makedirs(all_dir)
-    with open("../configs/wandb.json") as fin,\
+    with open("/home/koutchc1/pykt-toolkit/configs/wandb.json") as fin,\
         open(launch_file,"w") as fallsh:
         wandb_config = json.load(fin)
         WANDB_API_KEY = os.getenv("WANDB_API_KEY")
@@ -59,10 +59,10 @@ def main(params):
                     
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--src_dir", type=str, default="./seedwandb/")
+    parser.add_argument("--src_dir", type=str, default="/home/koutchc1/pykt-toolkit/examples/customseedwandb/")
     parser.add_argument("--project_name", type=str, default="kt_toolkits")
-    parser.add_argument("--dataset_names", type=str, default="assist2015")
-    parser.add_argument("--model_names", type=str, default="dkt,dkt+,dkt_forget,kqn,atktfix,dkvmn,sakt,saint,akt,gkt")
+    parser.add_argument("--dataset_names", type=str, default="falconcode_2_2")
+    parser.add_argument("--model_names", type=str, default="dkt")#,dkt+,dkt_forget,kqn,atktfix,dkvmn,sakt,saint,akt,gkt")
     parser.add_argument("--folds", type=str, default="0,1,2,3,4")
     parser.add_argument("--batch_size", type=int, default=128)
     parser.add_argument("--save_dir_suffix", type=str, default="")

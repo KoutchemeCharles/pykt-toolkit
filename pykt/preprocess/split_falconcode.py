@@ -163,7 +163,6 @@ def id_mapping(df):
 
 
 def predefined_train_test_split(df):
-    print(df.columns)
     train_df = df[df.split == "train"]
     test_df = df[df.split == "test"]
 
@@ -587,20 +586,19 @@ def main(dname, fname, dataset_name, configf, min_seq_len = 3, maxlen = 200, kfo
             
     # train test split & generate sequences
     # here, the variation is that we split based on the provided splits
-
     _, tr, tt = dataset_name.split("_")
     if tr == tt:
-        print("okay")
+        # The training and testing splits are the same, so we
+        # reserve a certain number of student sequencs for testing
+        # using the traditional evaluation scenario
         train_df, test_df = train_test_split(total_df, 0.2)
     else:
-        predefined_train_test_split(total_df) # train_test_split(total_df, 0.2)
-
-    print(train_df)
-    print(test_df)
+        # The way the students sequences where split was already 
+        # predefined so we allow this extension 
+        train_df, test_df = predefined_train_test_split(total_df) # train_test_split(total_df, 0.2)
 
     splitdf = KFold_split(train_df, kfold)
 
-    print("split dataframe", splitdf)
     splitdf[config].to_csv(os.path.join(dname, "train_valid.csv"), index=None)
     ins, ss, qs, cs, seqnum = calStatistics(splitdf, stares, "original train+valid")
     print(f"train+valid original interactions num: {ins}, select num: {ss}, qs: {qs}, cs: {cs}, seqnum: {seqnum}")

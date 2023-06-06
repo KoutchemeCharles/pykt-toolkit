@@ -10,7 +10,7 @@ from pykt.datasets import init_test_datasets
 device = "cpu" if not torch.cuda.is_available() else "cuda"
 os.environ['CUBLAS_WORKSPACE_CONFIG']=':4096:2'
 
-with open("../configs/wandb.json") as fin:
+with open("/home/koutchc1/pykt-toolkit/configs/wandb.json") as fin:
     wandb_config = json.load(fin)
 
 def main(params):
@@ -34,7 +34,7 @@ def main(params):
             seq_len = train_config["seq_len"]
             model_config["seq_len"] = seq_len   
 
-    with open("../configs/data_config.json") as fin:
+    with open("/home/koutchc1/pykt-toolkit/configs/data_config.json") as fin:
         curconfig = copy.deepcopy(json.load(fin))
         data_config = curconfig[dataset_name]
         data_config["dataset_name"] = dataset_name

@@ -1,0 +1,5 @@
+WANDB_API_KEY=ec630356a5b2818a01b9dc79163b363f78086ff2 wandb sweep all_wandbs/falconcode_2_2_dkt_qid_0.yaml -p kt_toolkits
+WANDB_API_KEY=ec630356a5b2818a01b9dc79163b363f78086ff2 wandb sweep all_wandbs/falconcode_2_2_dkt_qid_1.yaml -p kt_toolkits
+WANDB_API_KEY=ec630356a5b2818a01b9dc79163b363f78086ff2 wandb sweep all_wandbs/falconcode_2_2_dkt_qid_2.yaml -p kt_toolkits
+WANDB_API_KEY=ec630356a5b2818a01b9dc79163b363f78086ff2 wandb sweep all_wandbs/falconcode_2_2_dkt_qid_3.yaml -p kt_toolkits
+WANDB_API_KEY=ec630356a5b2818a01b9dc79163b363f78086ff2 wandb sweep all_wandbs/falconcode_2_2_dkt_qid_4.yaml -p kt_toolkits
