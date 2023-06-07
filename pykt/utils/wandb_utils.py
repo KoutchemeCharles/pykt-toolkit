@@ -64,13 +64,13 @@ class WandbUtils:
             if sweep.name not in sweep_dict:
                 sweep_dict[sweep.name] = []
             sweep_dict[sweep.name].append(sweep.id)
-               
+
         for name in list(sweep_dict.keys()):
             if len(sweep_dict[name]) > 1:
-                print(f"Error!! we can not process the same sweep name {name}, we will not return those sweeps:{sweep_dict[name]}")
-                del sweep_dict[name]
-            else:
-                sweep_dict[name] = sweep_dict[name][0]
+                print(f"Warning!! sweep {name}, was ran multiple times, taking the latest one :{sweep_dict[name]}")
+                
+            sweep_dict[name] = sweep_dict[name][0]
+
         return sweep_dict
 
     def _get_sweep_id(self,id,input_type):
@@ -117,7 +117,7 @@ class WandbUtils:
         df = df.sort_values("create_time")
         df["run_index"] = range(len(df))
         df.index = range(len(df))
-        return df
+        return df, model_config_keys
 
     def get_multi_df(self,id_list=[],input_type="sweep_name",drop_duplicate=False, drop_na=True, only_finish=True,n_jobs=5):
         """Get multi sweep result
@@ -130,7 +130,7 @@ class WandbUtils:
             _type_: _description_
         """
         def get_df_help(id):
-            df = self.get_df(id,input_type=input_type,drop_duplicate=drop_duplicate,drop_na=drop_na,only_finish=only_finish)
+            df, _ = self.get_df(id,input_type=input_type,drop_duplicate=drop_duplicate,drop_na=drop_na,only_finish=only_finish)
             df[input_type] = id
             return df
         p = ThreadPool(n_jobs)

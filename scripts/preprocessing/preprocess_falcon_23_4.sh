@@ -4,7 +4,7 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=16GB
 #SBATCH --chdir=/home/koutchc1/pykt-toolkit
-#SBATCH --output=/home/koutchc1/pykt-toolkit/logs/slurm_seq2seq_%A.out
+#SBATCH --output=/home/koutchc1/pykt-toolkit/logs/preprocessing/slurm_seq2seq_%A.out
 
 module load miniconda;
 source activate pykt;
