@@ -1,0 +1,10 @@
+{
+   "falconcode_2_2": {
+      "dkt": {
+         "dropout": 0.05,
+         "emb_size": 64,
+         "emb_type": "qid",
+         "learning_rate": 0.001
+      }
+   }
+}

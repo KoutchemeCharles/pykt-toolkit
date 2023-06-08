@@ -106,6 +106,5 @@ if __name__ == "__main__":
     parser.add_argument("--use_wandb", type=int, default=1)
 
     args = parser.parse_args()
-    print(args)
     params = vars(args)
     main(params)

@@ -63,7 +63,7 @@ def main(params):
     if 'maxlen' in data_config[dataset_name]:#prefer to use the maxlen in data config
         train_config["seq_len"] = data_config[dataset_name]['maxlen']
     seq_len = train_config["seq_len"]
-
+    
     print("Start init data")
     print(dataset_name, model_name, data_config, fold, batch_size)
     
@@ -142,7 +142,8 @@ def main(params):
     print(str(fold) + "\t" + model_name + "\t" + emb_type + "\t" + str(round(testauc, 4)) + "\t" + str(round(testacc, 4)) + "\t" + str(round(window_testauc, 4)) + "\t" + str(round(window_testacc, 4)) + "\t" + str(validauc) + "\t" + str(validacc) + "\t" + str(best_epoch))
     model_save_path = os.path.join(ckpt_path, emb_type+"_model.ckpt")
     print(f"end:{datetime.datetime.now()}")
-    
+    print(model_save_path)
+
     if params['use_wandb']==1:
         wandb.log({ 
                     "validauc": validauc, "validacc": validacc, "best_epoch": best_epoch,"model_save_path":model_save_path})
