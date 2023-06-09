@@ -2,7 +2,7 @@
 #SBATCH --job-name=pykt_preprocess
 #SBATCH --time=24:00:00
 #SBATCH --cpus-per-task=1
-#SBATCH --mem=16GB
+#SBATCH --mem=24GB
 #SBATCH --chdir=/home/koutchc1/pykt-toolkit
 #SBATCH --output=/home/koutchc1/pykt-toolkit/logs/preprocessing/slurm_seq2seq_%A.out
 

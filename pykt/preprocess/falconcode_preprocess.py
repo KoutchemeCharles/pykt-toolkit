@@ -22,9 +22,12 @@ def read_data_from_csv(read_file, write_file, data_split):
     # and which course ids are going to be used for testing 
     training_course_ids = list(map(int, data_split[0]))
     test_course_ids = list(map(int, data_split[1]))
-    course_ids = [("train_test", training_course_ids)]
-    if training_course_ids != test_course_ids:
-        course_ids.append(("test", test_course_ids))
+    
+    if training_course_ids == test_course_ids:
+        course_ids = [("train_test", training_course_ids)]
+    else:
+        course_ids = [("train", training_course_ids),
+                      ("test", test_course_ids)]
 
     data = []
     for split, course_id in course_ids:

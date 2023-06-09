@@ -1,0 +1,11 @@
+{
+   "falconcode_2_2": {
+      "dkt": [
+         "/scratch/work/koutchc1/experiments/pykt/models/dkt/falconcode_2_2_dkt_qid_3407_0_0.3_256_0.001_1_1_a9701277-4562-4bdc-8a92-a0a324be54ef/qid_model.ckpt",
+         "/scratch/work/koutchc1/experiments/pykt/models/dkt/falconcode_2_2_dkt_qid_42_1_0.1_256_0.001_1_1_a92d9011-a03a-4b69-9ea6-dc7aa896213a/qid_model.ckpt",
+         "/scratch/work/koutchc1/experiments/pykt/models/dkt/falconcode_2_2_dkt_qid_42_2_0.05_256_0.001_1_1_7ad91fb5-ec86-46af-bcd9-3073962861c9/qid_model.ckpt",
+         "/scratch/work/koutchc1/experiments/pykt/models/dkt/falconcode_2_2_dkt_qid_42_3_0.1_256_0.001_1_1_0fcf8845-83d2-4410-a805-c41e783e34b3/qid_model.ckpt",
+         "/scratch/work/koutchc1/experiments/pykt/models/dkt/falconcode_2_2_dkt_qid_42_4_0.05_256_0.001_1_1_22bebde0-85f7-45d0-a66a-d7a5221b01bc/qid_model.ckpt"
+      ]
+   }
+}

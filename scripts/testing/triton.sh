@@ -1,21 +1,19 @@
 #!/bin/sh
-#SBATCH --job-name=pykt_sweeping
+#SBATCH --job-name=pykt_testing
 #SBATCH --time=24:00:00
 #SBATCH --cpus-per-task=1
 #SBATCH --gpus-per-node=1
-#SBATCH --mem=10GB
+#SBATCH --mem=8GB
 #SBATCH --array=1-5
 #SBATCH --chdir=/home/koutchc1/pykt-toolkit
-#SBATCH --output=/home/koutchc1/pykt-toolkit/logs/search/slurm_seq2seq_%A_%a.out
+#SBATCH --output=/home/koutchc1/pykt-toolkit/logs/testing/slurm_seq2seq_%A_%a.out
 
 module load miniconda;
 source activate pykt;
 
 export PYTHONPATH="$HOME/pykt-toolkit"
 export HF_DATASETS_CACHE="/scratch/work/koutchc1/cache/huggingface/datasets/"
-export WANDB_API_KEY=ec630356a5b2818a01b9dc79163b363f78086ff2
 
 n=$SLURM_ARRAY_TASK_ID
-sweeping=`head -n ${n} start_sweeps.log | tail -1` # Get n-th line (1-indexed) of the file
-echo ${sweeping}
-${sweeping}
+path=`head -n ${n} /home/koutchc1/pykt-toolkit/best_models.txt | tail -1`
+python ./examples/wandb_predict.py --save_dir=${path}

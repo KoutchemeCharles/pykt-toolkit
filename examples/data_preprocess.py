@@ -46,17 +46,18 @@ if __name__ == "__main__":
         print(f"fpath: {args.file_path}")
 
     dname, writef = process_raw_data(args.dataset_name, dname2paths)
+    
+    print("-"*50)
+    # split
+    os.system("rm " + dname + "/*.pkl")
 
     if "falconcode" in args.dataset_name:
         #for concept level model
         split_falcon_concept(dname, writef, args.dataset_name, configf, args.min_seq_len,args.maxlen, args.kfold)
         print("="*100)
+        #for question level model
+        split_falcon_question(dname, writef, args.dataset_name, configf, args.min_seq_len,args.maxlen, args.kfold)
     else:
-        
-        print("-"*50)
-        # split
-        os.system("rm " + dname + "/*.pkl")
-
         #for concept level model
         split_concept(dname, writef, args.dataset_name, configf, args.min_seq_len,args.maxlen, args.kfold)
         print("="*100)

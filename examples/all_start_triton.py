@@ -60,36 +60,3 @@ with open(logf, "r") as fin:
         i += 4
 
 
-n_sweeps = end - start
-template = """
-#!/bin/sh
-#SBATCH --job-name=pykt_sweeping
-#SBATCH --time=24:00:00
-#SBATCH --cpus-per-task=1
-#SBATCH --gpus-per-node=1
-#SBATCH --mem=8GB
-"""
-template += f"#SBATCH --array=1-{n_sweeps}"
-template += """
-#SBATCH --chdir=/home/koutchc1/pykt-toolkit
-#SBATCH --output=/home/koutchc1/pykt-toolkit/logs/search/slurm_seq2seq_%A_%a.out
-
-module load miniconda;
-source activate pykt;
-
-export PYTHONPATH="$HOME/pykt-toolkit"
-export HF_DATASETS_CACHE="/scratch/work/koutchc1/cache/huggingface/datasets/"
-export CUDA_VISIBLE_DEVICES=1 
-
-n=$SLURM_ARRAY_TASK_ID
-"""
-
-template += 'iteration=`head -n ${n} ' + f"{sys.argv[2]} | tail -1` # Get n-th line (1-indexed) of the file\n"
-template += "echo ${iteration}\n"
-template += cmdpre + "${iteration}"
-template = dedent(template.strip())
-
-print(template)
-
-with open("/home/koutchc1/pykt-toolkit/scripts/search/triton.sh", "w") as fin:
-    fin.write(template)
