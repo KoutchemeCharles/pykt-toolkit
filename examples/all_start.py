@@ -9,8 +9,8 @@ def parse_args():
     parser.add_argument("--directed_log", default="log.all")
     parser.add_argument("--output_log", default="start_sweeps.log")
     parser.add_argument("--project_name", default="emnlp2023")
-    parser.add_argument("--dataset_names", type=str, default="falconcode_2_2")
-    parser.add_argument("--model_names", type=str, default="dkt")
+    parser.add_argument("--dataset_names", type=str, default="")
+    parser.add_argument("--model_names", type=str, default="")
 
     return parser.parse_args()
 
@@ -37,6 +37,8 @@ def check_model(fname, model_names):
     return False 
 
 def create_sweep_logs(input_log, output_log, dataset_names, model_names):
+    print(dataset_names)
+    print(model_names)
     sweeps = []
     with open(input_log, "r") as fin:
         i = 0
@@ -51,9 +53,10 @@ def create_sweep_logs(input_log, output_log, dataset_names, model_names):
             else:
                 print("error!")
             fname = fname.split(".")[0]
-            # print(f"fname is {fname}")
+            
             if check_dataset(fname, dataset_names) \
                 and check_model(fname, model_names):
+                
                 sweeps.append(sweepid)
             i += 4
 
@@ -71,15 +74,15 @@ def create_bash_script(n_sweeps, wandb_api_key, log_path):
     #SBATCH --time=32:00:00
     #SBATCH --cpus-per-task=1
     #SBATCH --gpus-per-node=1
-    #SBATCH --mem=10GB
+    #SBATCH --mem=12GB
     """)
     template += f"#SBATCH --array=1-{n_sweeps}"
     template += dedent("""
     #SBATCH --chdir=/home/koutchc1/pykt-toolkit
-    #SBATCH --output=/home/koutchc1/pykt-toolkit/logs/search/slurm_seq2seq_%A_%a.out
+    #SBATCH --output=/home/koutchc1/pykt-toolkit/logs/search/slurm_%A_%a.out
 
     module load miniconda;
-    source activate pykt;
+    source activate emnlp2023;
 
     export PYTHONPATH="$HOME/pykt-toolkit"
     export HF_DATASETS_CACHE="/scratch/work/koutchc1/cache/huggingface/datasets/"
@@ -99,8 +102,8 @@ def create_bash_script(n_sweeps, wandb_api_key, log_path):
 
 def main():
     args = vars(parse_args())
-    args["dataset_names"] = args["dataset_names"].split(",")
-    args["model_names"] = args["model_names"].split(",")
+    args["dataset_names"] = args["dataset_names"].split(",") if args["dataset_names"] else []
+    args["model_names"] = args["model_names"].split(",") if args["model_names"] else []
     n_sweeps = create_sweep_logs(args["directed_log"], 
                                  args["output_log"],
                                  args["dataset_names"],

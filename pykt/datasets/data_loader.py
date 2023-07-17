@@ -40,7 +40,7 @@ class KTDataset(Dataset):
         else:
             processed_data = file_path + folds_str + ".pkl"
 
-        if not os.path.exists(processed_data):
+        if True or not os.path.exists(processed_data):
             print(f"Start preprocessing {file_path} fold: {folds_str}...")
             if self.qtest:
                 self.dori, self.dqtest = self.__load_data__(sequence_path, folds)

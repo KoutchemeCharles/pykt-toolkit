@@ -7,7 +7,7 @@
 #SBATCH --output=/home/koutchc1/pykt-toolkit/logs/preprocessing/slurm_seq2seq_%A.out
 
 module load miniconda;
-source activate pykt;
+source activate emnlp2023;
 
 export PYTHONPATH="$HOME/pykt-toolkit"
 export HF_DATASETS_CACHE="/scratch/work/koutchc1/cache/huggingface/datasets/"

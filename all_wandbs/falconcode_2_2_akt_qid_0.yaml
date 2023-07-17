@@ -1,5 +1,5 @@
 name: falconcode_2_2_akt_qid_0
-program: wandb_akt_train.py
+program: ./examples/wandb_akt_train.py
 method: bayes
 metric:
     goal: maximize
@@ -12,7 +12,7 @@ parameters:
     emb_type:
         values: ['qid']
     save_dir:
-        values: ["models/akt_tiaocan_falconcode_2_2"]
+        values: ["/scratch/work/koutchc1/experiments/pykt/models/akt"]
     d_model:
         values: [64, 256]
     d_ff:

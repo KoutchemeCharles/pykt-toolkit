@@ -34,7 +34,7 @@ class KTQueDataset(Dataset):
 
         processed_data = file_path + folds_str + "_qlevel.pkl"
 
-        if not os.path.exists(processed_data):
+        if True or not os.path.exists(processed_data):
             print(f"Start preprocessing {file_path} fold: {folds_str}...")
 
             self.dori = self.__load_data__(sequence_path, folds)

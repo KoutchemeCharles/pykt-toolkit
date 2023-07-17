@@ -34,7 +34,7 @@ class DktForgetDataset(Dataset):
         else:
             processed_data = file_path + folds_str + "_dkt_forget.pkl"
 
-        if not os.path.exists(processed_data):
+        if True or not os.path.exists(processed_data):
             print(f"Start preprocessing {file_path} fold: {folds_str}...")
             if self.qtest:
                 self.dori, self.dgaps, self.max_rgap, self.max_sgap, self.max_pcount, self.dqtest = \

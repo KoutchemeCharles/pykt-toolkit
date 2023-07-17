@@ -1,4 +1,4 @@
-program: wandb_skvmn_train.py
+program: ./examples/wandb_skvmn_train.py
 method: grid
 metric:
     goal: maximize
@@ -11,7 +11,7 @@ parameters:
     emb_type:
         values: ["qid"]
     save_dir:
-        values: ["models/skvmn_tiaocan"]
+        values: ["/scratch/work/koutchc1/experiments/pykt/models/skvmn"]
     dim_s:
         values: [64,256]
     learning_rate:

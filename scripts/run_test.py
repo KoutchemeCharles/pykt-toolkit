@@ -24,7 +24,7 @@ def create_slurm_script(n_models, models_fp):
     #SBATCH --output=/home/koutchc1/pykt-toolkit/logs/testing/slurm_seq2seq_%A_%a.out
 
     module load miniconda;
-    source activate pykt;
+    source activate emnlp2023;
 
     export PYTHONPATH="$HOME/pykt-toolkit"
     export HF_DATASETS_CACHE="/scratch/work/koutchc1/cache/huggingface/datasets/"
